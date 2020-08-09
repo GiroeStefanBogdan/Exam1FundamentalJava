@@ -1,6 +1,3 @@
-# Exam1FundamentalJava
-Cuprinde Regex, Text Processing and Associative Array
-1.Secret Chat
 //Programming Fundamentals Final Exam Retake 10.04.2020
 //Problem 1. Secret Chat
 //You have plenty of free time, so you decide to write a program that conceals and reveals your received messages. Go ahead and type it in!
@@ -55,5 +52,70 @@ Cuprinde Regex, Text Processing and Associative Array
 //InsertSpace:|:5
 //hellodarling! -> hello.darling! (We insert a space at index 5)
 //Finally, after receiving the "Reveal" command, we print the resulting message.
+package Exam1;
 
-2.Mirroe Words
+import java.util.Scanner;
+
+public class secretChat {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        String codedMassage = scanner.nextLine();
+
+        String input = scanner.nextLine();
+
+        while (!input.equals("Reveal")){
+            String[] tockens = input.split(":\\|:");
+
+            if (tockens[0].equals("InsertSpace") && Integer.parseInt(tockens[1])>=0){
+                String sirInceput = codedMassage.substring(0, Integer.parseInt(tockens[1]) );
+                String strMidel = sirInceput + " ";
+                String strFinal = strMidel + codedMassage.substring(Integer.parseInt(tockens[1]));
+                System.out.println(strFinal);
+                codedMassage = strFinal;
+            }
+
+            //Reverse:|:{substring}
+            if(tockens[0].equals("Reverse")){
+                if (codedMassage.contains(tockens[1])){
+                    int lungimeSir = tockens[1].length();
+                    int beginPosition = codedMassage.indexOf(tockens[1]);
+                    String sir = "";
+
+                    sir = tockens[1];
+
+                    StringBuilder text = new StringBuilder(codedMassage);
+                    text = text.replace(beginPosition, beginPosition + tockens[1].length(),"");
+                    codedMassage = text.toString();
+
+
+                    StringBuilder builder = new StringBuilder();
+
+                    for (int i = sir.length()-1; i >=0; i--) {
+                        builder.append(sir.charAt(i));
+                    }
+                    codedMassage = codedMassage + builder.toString();
+                    System.out.println(codedMassage);
+                }else{
+                    System.out.println("error");
+                }
+
+
+            }
+            //ChangeAll:|:{substring}:|:{replacement}
+            if(tockens[0].equals("ChangeAll")){
+                if(codedMassage.contains(tockens[1])){
+                    codedMassage = codedMassage.replace(tockens[1], tockens[2]);
+                    System.out.println(codedMassage);
+                }
+
+            }
+
+
+            input = scanner.nextLine();
+        }
+        System.out.printf("You have a new text message: %s", codedMassage);
+
+    }
+}
